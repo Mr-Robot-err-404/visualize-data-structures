@@ -1,21 +1,37 @@
-export function BinaryTree(value) {
-  this.value = value;
-  this.left = null;
-  this.right = null;
+class Node {
+  constructor(value) {
+    this.value = value;
+    this.left = null;
+    this.right = null;
+  }
 }
 
-BinaryTree.prototype.insert = function(value) {
-  if (value < this.value) {
-    if (!this.left) {
-      this.left = new BinaryTree(value);
-    } else {
-      this.left.insert(value);
+function generateFullTree(layers) {
+  if (layers === 0) {
+    return null;
+  }
+  const root = new Node(parseInt(Math.random() * 10));
+  root.left = generateFullTree(layers - 1);
+  root.right = generateFullTree(layers - 1);
+  return root;
+}
+
+function bfs_search(root) {
+  const queue = [root];
+  let currentLayer = 1;
+  let nodesInCurrentLayer = 1;
+  while (queue.length > 0) {
+    const node = queue.shift();
+    nodesInCurrentLayer--;
+    if (node.left !== null) {
+      queue.push(node.left);
     }
-  } else {
-    if (!this.right) {
-      this.right = new BinaryTree(value);
-    } else {
-      this.right.insert(value);
+    if (node.right !== null) {
+      queue.push(node.right);
+    }
+    if (nodesInCurrentLayer === 0) {
+      currentLayer++;
+      nodesInCurrentLayer = queue.length;
     }
   }
 }
