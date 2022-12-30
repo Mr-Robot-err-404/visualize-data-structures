@@ -27,7 +27,6 @@ function BinarySearchTree() {
   const initiate = () => {
     setToggle(!toggle)
     root = generateFullTree(3)
-    console.log(root)
   }
 
   return (
