@@ -22,7 +22,7 @@ const NodeChain = ({ head, highlightedNode, reverse, bgColor, fastNode }) => {
           {nodes}
           {lines}
         </div>
-      </div>
+      </div> 
     </>
     );
 };

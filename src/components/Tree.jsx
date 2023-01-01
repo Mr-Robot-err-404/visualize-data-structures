@@ -1,71 +1,87 @@
-import React, { useEffect, useRef } from 'react';
+import React from 'react';
 import p5 from 'p5';
+class Tree extends React.Component {
+  canvasRef = React.createRef();
+  myP5 = null;
 
-const Tree = ({root}) => {
-  const wrapper = useRef(null);
-  const distance = { 
-    3: 130, 
-    4: 60,
-    5: 30
-  }
-  useEffect(() => {
-    const canvas = new p5(p => {
-      p.setup = () => {
-        p.createCanvas(window.innerWidth, window.innerHeight);
-      };
+  Sketch = p => {
+    const { nodes } = this.props;
+    const { highlightedNode } = this.props
+    let distance = { 
+      2: 300,
+      3: 150, 
+      4: 80,
+      5: 30
+    }
+    let midpoint = window.innerWidth / 2;
+    let coords = {
+      y1: 50,
+      y2: 150, 
+      y3: 225,
+      y4: 320,
+      y5: 370,
+      x1: midpoint,
+    };
+    p.setup = () => {
+      p.createCanvas(window.innerWidth, window.innerHeight);
+      p.textAlign(p.CENTER, p.CENTER);
+      p.textSize(20);
+    };
 
-      p.draw = () => {
-        const midpoint = window.innerWidth / 2;
-        const coords = {
-          y1: 50,
-          y2: 150, 
-          y3: 225,
-          y4: 320,
-          y5: 370,
-          x1: midpoint,
-          x2: midpoint - 300,
-          x3: midpoint + 300
-        };
-        p.background(document.body.style.backgroundColor);
-        let currLayer = 3 
-        let anchor = 2
+    p.draw = () => {
+      p.resizeCanvas(window.innerWidth, window.innerHeight);
+      function renderTree (type) {
+        let currLayer = 2
+        let anchor = 1
         let x
-        for(var i = 4; i < 32; i++){
+        highlightedNode === 1 ? p.fill("red") : p.fill("blue")
+        p.ellipse(coords['x1'], coords['y1'], 35, 35);
+        p.fill("white")
+        p.text(nodes[1].value, coords['x1'], coords['y1'])
+        for(var i = 2; i <= Object.keys(nodes).length; i++){
           if(Math.pow(2, currLayer) === i){
             currLayer++
           }
           if(i % 2 !== 0) {
             coords[`x${i}`] = coords[`x${anchor}`] + distance[currLayer]
             x = coords[`x${i}`]
-            p.line(coords[`x${anchor}`], coords[`y${currLayer - 1}`], x, coords[`y${currLayer}`])
+            type === "lines" && p.line(coords[`x${anchor}`], coords[`y${currLayer - 1}`], x, coords[`y${currLayer}`])
             anchor++
           } 
           else {
             coords[`x${i}`] = coords[`x${anchor}`] - distance[currLayer]
             x = coords[`x${i}`]
-            p.line(coords[`x${anchor}`], coords[`y${currLayer - 1}`], x, coords[`y${currLayer}`])
+            type === "lines" && p.line(coords[`x${anchor}`], coords[`y${currLayer - 1}`], x, coords[`y${currLayer}`])
           }
-          p.ellipse(coords[`x${i}`], coords[`y${currLayer}`], 35, 35)
+          if(type === "nodes"){
+            highlightedNode === i ? p.fill("red") : p.fill("blue")
+            p.ellipse(x, coords[`y${currLayer}`], 35, 35)
+            p.fill("white")
+            p.text(nodes[i].value, x, coords[`y${currLayer}`]);
+          }
         }
-        p.ellipse(coords['x1'], coords['y1'], 35, 35);
-        p.ellipse(coords['x2'], coords['y2'], 35, 35);
-        p.ellipse(coords['x3'], coords['y2'], 35, 35);
-        p.line(coords['x1'], coords['y1'], coords['x2'], coords['y2']);
-        p.line(coords['x1'], coords['y1'], coords['x3'], coords['y2']);
-      };
-    }, wrapper.current);
-
-    window.addEventListener('resize', () => {
-      canvas.resizeCanvas(window.innerWidth, window.innerHeight);
-    });
-
-    return () => {
-      window.removeEventListener('resize', () => {});
-      canvas.remove();
+      }
+      renderTree("lines")
+      renderTree("nodes")
     };
-  });
+  };
 
-  return <div ref={wrapper} />;
-};
+  componentDidMount() {
+    this.myP5 = new p5(this.Sketch, this.canvasRef.current);
+  }
 
-export default Tree
+  componentDidUpdate() {
+    this.myP5.remove()
+    this.myP5 = new p5(this.Sketch, this.canvasRef.current)
+}
+
+  componentWillUnmount() {
+    this.myP5.remove();
+  }
+
+  render() {
+    return <div ref={this.canvasRef} />;
+  }
+}
+
+export default Tree;

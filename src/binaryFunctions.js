@@ -35,3 +35,28 @@ function bfs_search(root) {
     }
   }
 }
+
+function randomTree(layers) {
+  if (layers === 0) {
+    return null;
+  }
+  if (layers === 1) {
+    return new Node();
+  }
+  const root = new Node();
+  root.left = randomTree(layers - 1);
+  if (layers === 3) {
+    // Set probability for third layer
+    if (Math.random() < 0.5) {
+      root.right = randomTree(layers - 1);
+    }
+  } else if (layers === 4) {
+    // Set probability for fourth layer
+    if (Math.random() < 0.75) {
+      root.right = randomTree(layers - 1);
+    }
+  } else {
+    root.right = randomTree(layers - 1);
+  }
+  return root;
+}

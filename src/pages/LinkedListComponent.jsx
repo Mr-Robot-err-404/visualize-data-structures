@@ -25,6 +25,11 @@ function LinkedListComponent() {
           Remove Duplicates
         </Dropdown.Item>
       </Link>
+      <Link to={'/linked-lists/bubble-sort'}>
+        <Dropdown.Item>
+          Bubble Sort
+        </Dropdown.Item>
+      </Link>
     </Dropdown>
     </div>
   )

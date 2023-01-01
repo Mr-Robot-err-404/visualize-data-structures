@@ -10,9 +10,12 @@ function BinaryTreeMenu() {
               Binary Search Tree
             </Dropdown.Item>
           </Link>
+          <Link to={'/binary-trees/reverse'}>
             <Dropdown.Item>
-              Breadth-First Search
+              Reverse Binary Tree
             </Dropdown.Item>
+          </Link>
+            
         </Dropdown>
         </div>
       )

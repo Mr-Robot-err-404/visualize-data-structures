@@ -1,11 +1,13 @@
 import { Button } from 'flowbite-react';
 import React, { useState } from 'react'
-import Tree from '../components/Tree'
+import TreeTest from '../components/Tree'
 
-let root 
+let root = null
 function BinarySearchTree() {
-  const [toggle, setToggle] = useState(false)
-
+  const [nodes, setNodes] = useState({})
+  const [isTreeCreated, setIsTreeCreated] = useState(false)
+  const [isTreeFinished, setIsTreeFinished] = useState(false)
+  const [highlightedNode, setHighlightedNode] = useState(null)
   class Node {
     constructor(value) {
       this.value = value;
@@ -23,16 +25,49 @@ function BinarySearchTree() {
     root.right = generateFullTree(layers - 1);
     return root;
   }
+
+   async function bfs_search(root, render) {
+    let index = 1
+    const queue = [root];
+    let nodesInCurrentLayer = 1;
+    while (queue.length > 0) {
+      const node = queue.shift();
+      if(render){
+        nodes[index++] = node
+        setNodes(nodes)
+      }
+      else {
+        setHighlightedNode(index++)
+      }
+      nodesInCurrentLayer--;
+      if (node.left !== null) {
+        queue.push(node.left);
+      }
+      if (node.right !== null) {
+        queue.push(node.right);
+      }
+      if (nodesInCurrentLayer === 0) {
+        nodesInCurrentLayer = queue.length;
+      }
+      await new Promise((resolve) => setTimeout(resolve, 300))
+    }
+    setHighlightedNode(null)
+    setIsTreeFinished(true)
+  }
   
   const initiate = () => {
-    setToggle(!toggle)
-    root = generateFullTree(3)
+    setIsTreeCreated(true)
+    root = generateFullTree(5)
+    bfs_search(root, true)
   }
 
   return (
     <div>
-      <Button onClick={initiate}>Toggle Tree</Button>
-      {toggle && <Tree root={root}/>}
+      <div className='mx-auto flex justify-center'>
+        {!isTreeCreated && <Button onClick={initiate}>Generate Binary Tree</Button>}
+      </div>
+      {isTreeFinished && <Button onClick={() => bfs_search(root, false)}>Start the Search</Button>}
+      {isTreeCreated && <TreeTest nodes={nodes} highlightedNode={highlightedNode}/>}
     </div>
   )
 }

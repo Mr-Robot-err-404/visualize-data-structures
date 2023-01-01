@@ -23,12 +23,12 @@ export class LinkedList {
   }
 }
 
-export const createLinkedList = (arr, min, max) => {
+export const createLinkedList = (arr, min, max, bubble) => {
   let len = null
   if(!arr){
     len = getRandomInt(5, 20)
     arr = generateRandomArray(len, min, max)
-    arr.sort((a, b) => a - b)
+    !bubble && arr.sort((a, b) => a - b)
   }
   else {
     len = arr.length
