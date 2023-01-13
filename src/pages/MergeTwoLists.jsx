@@ -2,6 +2,8 @@ import { useState } from "react"
 import NodeChain from '../components/NodeChain'
 import {createLinkedList, createNewList} from '../sexyFunctions'
 import { Button } from "flowbite-react"
+import CodeBlock from "../components/CodeBlock"
+import { ListSnippets } from "../codeSnippets"
 
 let head = null, head2 = null
 function MergeTwoLists() {
@@ -57,6 +59,8 @@ function MergeTwoLists() {
           <NodeChain head={head} highlightedNode={highlightedNode1} bgColor={"lightblue"}/>
           <NodeChain head={head2} highlightedNode={highlightedNode2} bgColor={"lightblue"}/>
           <NodeChain head={newList} bgColor={"darkblue"}/>
+          <br></br>
+          <CodeBlock code={ListSnippets['merge']}/>
         </div>}
     </div>
   )

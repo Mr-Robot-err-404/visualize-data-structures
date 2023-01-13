@@ -11,6 +11,7 @@ import BinarySearchTree from './pages/BinarySearchTree';
 import RemoveDuplicates from './pages/RemoveDuplicates';
 import ReverseBinaryTree from './pages/ReverseBinaryTree';
 import BubbleSort from './pages/BubbleSort';
+import DepthFirstSearch from './pages/DepthFirstSearch';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
           <Route path='/linked-lists/bubble-sort' element={<BubbleSort/>}/>
           <Route path='/binary-trees' element={<BinaryTreeMenu/>}/>
           <Route path='/binary-trees/bst' element={<BinarySearchTree/>}/>
+          <Route path='/binary-trees/dfs' element={<DepthFirstSearch/>}/>
           <Route path='/binary-trees/reverse' element={<ReverseBinaryTree/>}/>
         </Routes>
       </Router>

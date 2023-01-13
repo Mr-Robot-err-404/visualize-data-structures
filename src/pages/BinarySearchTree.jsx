@@ -1,6 +1,7 @@
 import { Button } from 'flowbite-react';
 import React, { useState } from 'react'
-import TreeTest from '../components/Tree'
+import Tree from '../components/Tree'
+
 
 let root = null
 function BinarySearchTree() {
@@ -8,6 +9,7 @@ function BinarySearchTree() {
   const [isTreeCreated, setIsTreeCreated] = useState(false)
   const [isTreeFinished, setIsTreeFinished] = useState(false)
   const [highlightedNode, setHighlightedNode] = useState(null)
+  const [rendering, setRendering] = useState(true)
   class Node {
     constructor(value) {
       this.value = value;
@@ -27,6 +29,7 @@ function BinarySearchTree() {
   }
 
    async function bfs_search(root, render) {
+    isTreeFinished && setRendering(false)
     let index = 1
     const queue = [root];
     let nodesInCurrentLayer = 1;
@@ -66,8 +69,10 @@ function BinarySearchTree() {
       <div className='mx-auto flex justify-center'>
         {!isTreeCreated && <Button onClick={initiate}>Generate Binary Tree</Button>}
       </div>
+      <div className='mx-auto flex justify-center'>
       {isTreeFinished && <Button onClick={() => bfs_search(root, false)}>Start the Search</Button>}
-      {isTreeCreated && <TreeTest nodes={nodes} highlightedNode={highlightedNode}/>}
+      </div>
+      {isTreeCreated && <Tree nodes={nodes} highlightedNode={highlightedNode} layers={5}/>}
     </div>
   )
 }

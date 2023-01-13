@@ -1,5 +1,7 @@
 import { Button } from 'flowbite-react'
 import React, {useState} from 'react'
+import { ListSnippets } from '../codeSnippets'
+import CodeBlock from '../components/CodeBlock'
 import NodeChain from '../components/NodeChain'
 import { createLinkedList } from '../sexyFunctions'
 
@@ -65,6 +67,8 @@ function BubbleSort() {
           <NodeChain head={heads[0]}  bgColor={bgColor[0]} highlightedNode={highlightedNodes1[0]} fastNode={highlightedNodes2[0]}/>
           <NodeChain head={heads[1]}  bgColor={bgColor[1]} highlightedNode={highlightedNodes1[1]} fastNode={highlightedNodes2[1]}/>
           <NodeChain head={heads[2]}  bgColor={bgColor[2]} highlightedNode={highlightedNodes1[2]} fastNode={highlightedNodes2[2]}/>
+          <br></br>
+          <CodeBlock code={ListSnippets['bubble']}/>
         </div>}
     </div>
   )

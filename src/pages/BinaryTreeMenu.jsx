@@ -15,7 +15,11 @@ function BinaryTreeMenu() {
               Reverse Binary Tree
             </Dropdown.Item>
           </Link>
-            
+          <Link to={'/binary-trees/dfs'}>
+            <Dropdown.Item>
+              Depth-First Search
+            </Dropdown.Item>
+          </Link>
         </Dropdown>
         </div>
       )

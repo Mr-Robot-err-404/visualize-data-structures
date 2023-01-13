@@ -1,7 +1,7 @@
 import React from 'react';
 import p5 from 'p5';
 
-class Tree extends React.Component {
+class Test extends React.Component {
   canvasRef = React.createRef();
   myP5 = null;
 
@@ -12,22 +12,16 @@ class Tree extends React.Component {
     let canvasSize = {}
     let distance = {}
     let coords = {}
-    
-    let steps = [75, 95, 50]
+    const steps = [75, 95, 50]
     let xSize = 2600, ySize = 1200
     let xVal = 37.5, yVal = 50
     let diff = Math.pow(2, layers - 5) * 100
-    
 
     for(var i = 6; i <= layers; i++){
       canvasSize[layers] = [xSize, ySize]
       xSize *= 2
       ySize *= 2
     }
-    canvasSize[5] = [window.innerWidth, window.innerHeight]
-    let midpoint = canvasSize[layers][0] / 2;
-    coords[`y1`] = 50
-    coords['x1'] = midpoint
     for(var i = layers; i >= 2; i--){
       distance[i] = xVal
       xVal *= 2
@@ -43,7 +37,10 @@ class Tree extends React.Component {
         coords[`y${i}`] = yVal
       }
     }
-    
+    canvasSize[layers][5] = [window.innerWidth, window.innerHeight]
+    let midpoint = canvasSize[layers][0] / 2;
+    coords[`y1`] = 50
+    coords['x1'] = midpoint
     p.updateHighlightedNode = newHighlightedNode => {
       highlightedNode = newHighlightedNode
     }
@@ -119,4 +116,4 @@ class Tree extends React.Component {
   }
 }
 
-export default Tree;
+export default Test;

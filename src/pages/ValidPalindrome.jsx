@@ -1,6 +1,8 @@
 import { useState } from "react"
 import { Button } from "flowbite-react"
 import { createLinkedList, palindromes, falsePalindromes, copyLinkedList } from "../sexyFunctions"
+import { ListSnippets } from "../codeSnippets"
+import CodeBlock from "../components/CodeBlock"
 import NodeChain from "../components/NodeChain"
 
 function ValidPalindrome() {
@@ -125,6 +127,8 @@ function ValidPalindrome() {
             {splitHeads[3] && <NodeChain head={splitHeads[3]} bgColor={bgColor[8]} highlightedNode={highlightedSplitNode[3]} reverse={reverse}/>}
             <NodeChain head={heads[4]} bgColor={bgColor[4]} highlightedNode={highlightedNodes1[4]} fastNode={highlightedNodes2[4]}/>
             {splitHeads[4] && <NodeChain head={splitHeads[4]} bgColor={bgColor[9]} highlightedNode={highlightedSplitNode[4]} reverse={reverse}/>}
+            <br></br>
+            <CodeBlock code={ListSnippets['palindrome']}/>
         </div>}
     </div>
   )

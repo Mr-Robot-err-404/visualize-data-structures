@@ -2,6 +2,8 @@ import React, {useState, useEffect} from 'react'
 import NodeChain from '../components/NodeChain'
 import { createLinkedList, copyLinkedList, reverseLinkedList } from '../sexyFunctions'
 import { Button } from 'flowbite-react'
+import { ListSnippets } from '../codeSnippets'
+import CodeBlock from '../components/CodeBlock'
 
 let head = null, copy ,reverseList
 
@@ -53,6 +55,8 @@ function ReverseLinkedList() {
           </div>}
           <NodeChain head={head} highlightedNode={highlightedNode} reverse={true} bgColor={"lightblue"}/>
           {reset && <NodeChain head={reverseList} bgColor={"darkblue"}/>}
+          <br></br>
+          <CodeBlock code={ListSnippets['reverse']}/>
         </div>
       </>}
     </div>

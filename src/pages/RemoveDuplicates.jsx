@@ -1,5 +1,7 @@
 import { Button } from 'flowbite-react'
 import React, { useState } from 'react'
+import { ListSnippets } from '../codeSnippets'
+import CodeBlock from '../components/CodeBlock'
 import NodeChain from '../components/NodeChain'
 import { createLinkedList } from '../sexyFunctions'
 
@@ -68,6 +70,8 @@ function RemoveDuplicates() {
           {removedHeads[1] && <NodeChain head={removedHeads[1]} bgColor={bgColor[4]}/>}
           <NodeChain head={heads[2]} bgColor={bgColor[2]} highlightedNode={highlightedNode[2]}/>
           {removedHeads[2] && <NodeChain head={removedHeads[2]} bgColor={bgColor[5]}/>}
+          <br></br>
+          <CodeBlock code={ListSnippets['duplicates']}/>
         </div>}
     </div>
   )

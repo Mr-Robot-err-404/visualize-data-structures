@@ -7,7 +7,6 @@ export function bubbleSort(head) {
       while (current && current.next) {
         if (current.value > current.next.value) {
           sorted = false;
-          // Swap the elements
           let temp = current.value;
           current.value = current.next.value;
           current.next.value = temp;

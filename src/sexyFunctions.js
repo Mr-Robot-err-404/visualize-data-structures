@@ -77,7 +77,7 @@ export const copyLinkedList = head => {
   return copyHead;
 };
 
-export const reverseLinkedList = head => {
+export function reverseLinkedList(head) {
   let curr = head;
   let prev = null;
   while (curr) {
@@ -89,7 +89,7 @@ export const reverseLinkedList = head => {
   return prev;
 };
 
-export const mergeTwoSortedLinkedLists = (list1, list2) => {
+export function mergeTwoSortedLinkedLists(list1, list2) {
   let mergedList = new LinkedList();
   let current1 = list1.head;
   let current2 = list2.head;
@@ -113,7 +113,7 @@ export const mergeTwoSortedLinkedLists = (list1, list2) => {
   return mergedList;
 }
 
-export const isPalindrome = (head) => {
+export function isPalindrome(head) {
   // Edge case: empty or single-node linked list
   if (!head || !head.next) return true;
 

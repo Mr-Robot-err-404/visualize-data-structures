@@ -36,6 +36,22 @@ function bfs_search(root) {
   }
 }
 
+function depthFirstSearch(root) {
+  if (!root) return
+  depthFirstSearch(root.left) // visit the left sub-tree
+  depthFirstSearch(root.right) // visit the right sub-tree
+}
+
+function dfs(root) {
+  if (!root) return;
+  const stack = [root];
+  while (stack.length > 0) {
+    const node = stack.pop();
+    if (node.right) stack.push(node.right);
+    if (node.left) stack.push(node.left);
+  }
+}
+
 function randomTree(layers) {
   if (layers === 0) {
     return null;
