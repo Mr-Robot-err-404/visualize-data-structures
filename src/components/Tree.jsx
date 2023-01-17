@@ -18,7 +18,6 @@ class Tree extends React.Component {
     let xVal = 37.5, yVal = 50
     let diff = Math.pow(2, layers - 5) * 100
     
-
     for(var i = 6; i <= layers; i++){
       canvasSize[layers] = [xSize, ySize]
       xSize *= 2

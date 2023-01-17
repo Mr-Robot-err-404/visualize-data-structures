@@ -2,7 +2,6 @@ import { Button } from 'flowbite-react';
 import React, { useState } from 'react'
 import Tree from '../components/Tree'
 
-
 let root = null
 function ReverseBinaryTree() {
   const [nodes, setNodes] = useState({})
@@ -13,18 +12,17 @@ function ReverseBinaryTree() {
   const [layers, setLayers] = useState(6)
 
   class Node {
-    constructor(value) {
+    constructor(value, index) {
       this.value = value;
       this.left = null;
       this.right = null;
+      this.index = index
     }
   }
-  
+
   function generateFullTree(layers) {
-    if (layers === 0) {
-      return null;
-    }
-    const root = new Node(parseInt(Math.random() * 10));
+    if (layers === 0) return null
+    const root = new Node(parseInt(Math.random() * 10), null);
     root.left = generateFullTree(layers - 1);
     root.right = generateFullTree(layers - 1);
     return root;
@@ -37,6 +35,7 @@ function ReverseBinaryTree() {
     while (queue.length > 0) {
       const node = queue.shift();
       if(isRendering){
+          node.index = index
           nodes[index++] = node
           setNodes(nodes)
       }

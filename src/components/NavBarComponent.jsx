@@ -31,9 +31,6 @@ function NavBarComponent() {
           <Navbar.Link href="/binary-trees">
             Binary Trees 
           </Navbar.Link>
-          <Navbar.Link href="/navbars">
-            Stacks
-          </Navbar.Link>
         </Navbar.Collapse>
       </Navbar>
     </div>
