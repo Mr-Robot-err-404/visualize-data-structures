@@ -23,10 +23,12 @@ export class LinkedList {
   }
 }
 
-export const createLinkedList = (arr, min, max, bubble) => {
+export const createLinkedList = (arr, min, max, bubble, reverse, length) => {
   let len = null
   if(!arr){
-    len = getRandomInt(5, 20)
+    if(reverse) len = getRandomInt(17, 22)
+    else if(length) len = getRandomInt(5, 25 - length)
+    else len = getRandomInt(5, 20)
     arr = generateRandomArray(len, min, max)
     !bubble && arr.sort((a, b) => a - b)
   }
@@ -164,6 +166,15 @@ function removeDuplicates(head) {
   return head;
 }
 
+export const getListLength= (head) => {
+    let curr = head, length = 0
+    while(curr) {
+      length++
+      curr = curr.next
+    }
+    return length
+}
+
 export const splitList = (head, splitNode) => {
   let curr = head;
   let prev = null;
@@ -190,29 +201,14 @@ export const generateRandomArray = (length, min, max) => {
   return arr
 }
 
-export const palindromes = [
-  "REDIVIDER", 
-  "HANNAH",
-  "RACECAR",
-  "TENET",
-  "ROTAVATOR",
-  "135531",
-  "7449447",
-  "ABBCECBBA",
-  "XYYXZXYYX",
-  "NOLEMONNOMELON",
-  "DOGEESESEEGOD",
-]
-
-export const falsePalindromes = [
-  "12334321",
-  "XXYZXX",
-  "AABBCCCDD",
-  "DARTHVADER",
-  "7654467",
-  "LEODICAPRIO",
-  "MASTERYODA"
-]
+export const getSortedArray = (arr, len) => {
+  let newArr = []
+  for(var i = 0; i < len; i++){
+    let index = Math.floor(Math.random() * arr.length)
+    newArr.push(arr.splice(index, 1))
+  }
+  return newArr.sort((a, b) => a - b)
+}
 
 
 

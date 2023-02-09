@@ -1,14 +1,15 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Card } from 'flowbite-react'
-import { Button, Modal } from 'flowbite-react'
+import { Button } from 'flowbite-react'
 import { Link } from 'react-router-dom'
+import TreeProfile from '../binary-profile.png'
+import ListProfile from '../linked-list-profile.png'
 
 function HomePage() {
-  const [showModal, setShowModal] = useState(false)
   return (
-    <div className='flex justify-around'>
-      <div className="max-w-sm">
-      <Card imgSrc="https://flowbite.com/docs/images/blog/image-1.jpg">
+    <div className='flex justify-center'>
+      <div className="max-w-sm mx-10">
+      <Card imgSrc={ListProfile}>
         <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
           Linked Lists
         </h5>
@@ -17,7 +18,7 @@ function HomePage() {
         </p>
         <Link to={'/linked-lists'}>
           <Button>
-          Read more
+          Explore
           <svg
             className="ml-2 -mr-1 h-4 w-4"
             fill="currentColor"
@@ -34,17 +35,17 @@ function HomePage() {
         </Link>
       </Card>
       </div>
-      <div className="max-w-sm">
-      <Card imgSrc="https://flowbite.com/docs/images/blog/image-1.jpg">
+      <div className="max-w-sm mx-10">
+      <Card imgSrc={TreeProfile}>
         <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
           Binary Trees
         </h5>
         <p className="font-normal text-gray-700 dark:text-gray-400">
-          BFS and DFS algorithms for binary trees
+          Traverse Binary trees with the Breadth-First and Depth-First Search Algorithms.
         </p>
         <Link to={'/binary-trees'}>
           <Button>
-          Read more
+          Explore
           <svg
             className="ml-2 -mr-1 h-4 w-4"
             fill="currentColor"

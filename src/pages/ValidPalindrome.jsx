@@ -1,12 +1,36 @@
 import { useState } from "react"
 import { Button } from "flowbite-react"
-import { createLinkedList, palindromes, falsePalindromes, copyLinkedList } from "../sexyFunctions"
-import { ListSnippets } from "../codeSnippets"
+import { createLinkedList,  copyLinkedList } from "../sexyFunctions"
+import { codeSnippets } from "../codeSnippets"
 import CodeBlock from "../components/CodeBlock"
 import NodeChain from "../components/NodeChain"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { Link } from 'react-router-dom'
 
 function ValidPalindrome() {
+  const palindromes = [
+    "REDIVIDER", 
+    "HANNAH",
+    "RACECAR",
+    "TENET",
+    "ROTAVATOR",
+    "ABBCECBBA",
+    "XYYXZXYYX",
+    "NOLEMONNOMELON",
+    "DOGEESESEEGOD",
+  ]
+
+  const falsePalindromes = [
+    "12334321",
+    "XXYZXX",
+    "DARTHVADER",
+    "LEODICAPRIO",
+    "MASTERYODA"
+  ]
+
   const [isListCreated, setIsListCreated] = useState(false)
+  const [isStarted, setIsStarted] = useState(false)
   const [highlightedNodes1, setHighlightedNodes1] = useState({})
   const [highlightedNodes2, setHighlightedNodes2] = useState({})
   const [highlightedSplitNode, setHighlightedSplitNode] = useState({})
@@ -16,7 +40,7 @@ function ValidPalindrome() {
   const [splitHeads, setSplitHeads] = useState({})
 
   async function palindromeFiesta(heads) {
-    for(var i = 0; i < 5; i++){
+    for(var i = 0; i < 3; i++){
       let prev = null
       let slow = heads[i];
       let fast = heads[i];
@@ -33,8 +57,6 @@ function ValidPalindrome() {
       setHighlightedNodes1({...highlightedNodes1, [i] : index1})
       setHighlightedNodes2({...highlightedNodes2, [i] : index2})
       await new Promise((resolve) => setTimeout(resolve, 500))
-      
-      //At this point, the splitHeads from the previous iteration get obliterated. Welp. 
       splitHeads[i] = slow
       setSplitHeads(splitHeads)
       setBgcolor({...bgColor, [i + 5]: "darkblue"})
@@ -88,34 +110,49 @@ function ValidPalindrome() {
 
   const initiate = () => {
     let truePals = palindromes, falsePals = falsePalindromes
-    for(var i = 0; i < 5; i++) {
+    for(var i = 0; i < 3; i++) {
         let randVal = Math.random(), index, arr
-        if(randVal < 0.7 ){
+        if(i === 2) {
+          index = Math.floor(Math.random() * truePals.length)
+          arr = truePals.splice(index, 1)
+        }
+        else {
+          if(randVal < 0.7 ){
             index = Math.floor(Math.random() * truePals.length)
             arr = truePals.splice(index, 1)
         }
         else {
             index = Math.floor(Math.random() * falsePals.length)
             arr = falsePals.splice(index, 1)
+          }
         }
-        heads[i] = createLinkedList(arr[0])
-        bgColor[i] = "lightblue"
-        setHeads(heads)
-        setBgcolor(bgColor)
+      heads[i] = createLinkedList(arr[0])
+      bgColor[i] = "lightblue"
+      setHeads(heads)
+      setBgcolor(bgColor)
     }
     setIsListCreated(true)
   }
 
   return (
-    <div>
+    <div className="relative">
+    <div className='absolute left-20 my-3'>
+      <Link to={'/linked-lists'}>  
+              <FontAwesomeIcon icon={faArrowLeft}></FontAwesomeIcon>
+      </Link>
+    </div>
     {!isListCreated && 
         <div className='mx-auto flex justify-center'>
-        <Button onClick={() => initiate()}>Generate 5 Linked Lists</Button>
+        <Button onClick={() => initiate()}>Generate 3 Linked Lists</Button>
         </div>}
         {isListCreated &&
         <div className="flex items-center flex-col">
             <div className='justify-center'>
-            <Button color="success" onClick={() => palindromeFiesta(heads)}>Start the Algorithm</Button>
+            {!isStarted && <Button color="success" onClick={() => {
+                palindromeFiesta(heads)
+                setIsStarted(true)
+              }}>Start the Algorithm</Button>}
+            {isStarted && <CodeBlock code={codeSnippets['palindrome']} title={'Valid Palindrome'}/>}
             </div>
             <NodeChain head={heads[0]} bgColor={bgColor[0]} highlightedNode={highlightedNodes1[0]} fastNode={highlightedNodes2[0]}/>
             {splitHeads[0] && <NodeChain head={splitHeads[0]} bgColor={bgColor[5]} highlightedNode={highlightedSplitNode[0]} reverse={reverse}/>}
@@ -128,7 +165,6 @@ function ValidPalindrome() {
             <NodeChain head={heads[4]} bgColor={bgColor[4]} highlightedNode={highlightedNodes1[4]} fastNode={highlightedNodes2[4]}/>
             {splitHeads[4] && <NodeChain head={splitHeads[4]} bgColor={bgColor[9]} highlightedNode={highlightedSplitNode[4]} reverse={reverse}/>}
             <br></br>
-            <CodeBlock code={ListSnippets['palindrome']}/>
         </div>}
     </div>
   )

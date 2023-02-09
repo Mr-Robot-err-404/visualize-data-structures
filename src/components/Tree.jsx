@@ -1,18 +1,22 @@
 import React from 'react';
 import p5 from 'p5';
+import { translate } from '../binaryFunctions';
 
 class Tree extends React.Component {
-  canvasRef = React.createRef();
-  myP5 = null;
+  canvasRef = React.createRef()
+  myP5 = null
 
   Sketch = p => {
     const { nodes } = this.props
     const { layers } = this.props
+    const { updateTarget } = this.props
+    let { viewScale } = this.props
+    let { target } = this.props
     let highlightedNode = null
     let canvasSize = {}
     let distance = {}
     let coords = {}
-    
+
     let steps = [75, 95, 50]
     let xSize = 2600, ySize = 1200
     let xVal = 37.5, yVal = 50
@@ -23,10 +27,11 @@ class Tree extends React.Component {
       xSize *= 2
       ySize *= 2
     }
-    canvasSize[5] = [window.innerWidth, window.innerHeight]
+    canvasSize[5] = [window.screen.width, window.screen.height]
     let midpoint = canvasSize[layers][0] / 2;
     coords[`y1`] = 50
     coords['x1'] = midpoint
+
     for(var i = layers; i >= 2; i--){
       distance[i] = xVal
       xVal *= 2
@@ -46,19 +51,24 @@ class Tree extends React.Component {
     p.updateHighlightedNode = newHighlightedNode => {
       highlightedNode = newHighlightedNode
     }
-    p.setup = () => {
-      p.createCanvas(canvasSize[layers][0],canvasSize[layers][1]);
-      p.textAlign(p.CENTER, p.CENTER);
-      p.textSize(20);
+    p.updateViewscale = newViewscale => {
+      viewScale = newViewscale
+    }
+    p.setup = () => { 
+      p.createCanvas(canvasSize[layers][0],canvasSize[layers][1])
+      p.textAlign(p.CENTER, p.CENTER)
+      p.textSize(20)
     };
 
     p.draw = () => {
+      p.translate(translate[layers][0], translate[layers][1])
+      p.scale(viewScale)
       function renderTree (type) {
         let currLayer = 2
         let anchor = 1
         let x
         highlightedNode === 1 ? p.fill("red") : p.fill("blue")
-        p.ellipse(coords['x1'], coords['y1'], 35, 35);
+        p.ellipse(coords['x1'], coords['y1'], 35, 35)
         p.fill("white")
         p.text(nodes[1].value, coords['x1'], coords['y1'])
         for(var i = 2; i <= Object.keys(nodes).length; i++){
@@ -68,34 +78,59 @@ class Tree extends React.Component {
           if(i % 2 !== 0) {
             coords[`x${i}`] = coords[`x${anchor}`] + distance[currLayer]
             x = coords[`x${i}`]
-            type === "lines" && p.line(coords[`x${anchor}`], coords[`y${currLayer - 1}`], x, coords[`y${currLayer}`])
+            if(type === "lines" && nodes[i].value !== 'A' && nodes[i].ancestor.value !== 'A'){
+              p.line(coords[`x${anchor}`], coords[`y${currLayer - 1}`], x, coords[`y${currLayer}`])
+            }
             anchor++
           } 
           else {
             coords[`x${i}`] = coords[`x${anchor}`] - distance[currLayer]
             x = coords[`x${i}`]
-            type === "lines" && p.line(coords[`x${anchor}`], coords[`y${currLayer - 1}`], x, coords[`y${currLayer}`])
-          }
-          if(type === "nodes"){
-            if (i === highlightedNode) {
-              p.fill("red")
+            if(type === "lines" && nodes[i].value !== 'A' && nodes[i].ancestor.value !== 'A'){
+              p.line(coords[`x${anchor}`], coords[`y${currLayer - 1}`], x, coords[`y${currLayer}`])
+            }          }
+          if(type === "nodes" && nodes[i].value !== 'A' && nodes[i].ancestor.value !== 'A'){
+            if (nodes[i].index === highlightedNode) {
+              nodes[i].target ? p.fill("green") : p.fill("red")
               p.ellipse(x, coords[`y${currLayer}`], 35, 35)
+              p.fill("white")
+              p.text(nodes[i].value, x, coords[`y${currLayer}`])
             } else {
-              p.fill("blue")
+              nodes[i].target ? p.fill("purple") : p.fill("blue")
               p.ellipse(x, coords[`y${currLayer}`], 35, 35)
+              p.fill("white")
+              p.text(nodes[i].value, x, coords[`y${currLayer}`])
             }
-            p.fill("white")
-            p.text(nodes[i].value, x, coords[`y${currLayer}`]);
           }
         }
       }
       renderTree("lines")
       renderTree("nodes")
-    };
-    p.windowResized = () => {
-      p.resizeCanvas(window.innerWidth, window.innerHeight); 
-    };
-  };
+    }
+    p.mouseClicked = function() {
+      if(!target.current){
+        let xPos = (p.mouseX - translate[layers][0]) / viewScale
+        let yPos = (p.mouseY - translate[layers][1]) / viewScale
+        let distance = p.dist( coords[`x${1}`],  coords[`y${1}`], xPos, yPos)
+        if (distance < 35 / 2) {
+          nodes[i].target = true
+        }
+        let currLayer = 2
+        for(let i = 2; i < Object.keys(nodes).length; i++){
+          if(Math.pow(2, currLayer) === i){
+            currLayer++
+          }
+          let d = p.dist( coords[`x${i}`],  coords[`y${currLayer}`], xPos, yPos)
+          if (d < (35) / 2) {
+            if(nodes[i].value !== 'A' && nodes[i].ancestor.value !== 'A'){
+              nodes[i].target = true
+              updateTarget(nodes[i].value)
+            }
+          }
+        }
+      }
+    }
+  }
 
   componentDidMount() {
     this.myP5 = new p5(this.Sketch, this.canvasRef.current);
@@ -105,13 +140,16 @@ class Tree extends React.Component {
     if (this.props.highlightedNode !== prevProps.highlightedNode) {
       this.myP5.updateHighlightedNode(this.props.highlightedNode)
     }
+    if(this.props.viewScale !== prevProps.viewScale){
+      this.myP5.remove();
+      this.myP5 = new p5(this.Sketch, this.canvasRef.current);
+      this.myP5.updateViewscale(this.props.viewScale)
+    }
   }
 
   componentWillUnmount() {
     this.myP5.remove();
   }
-
-  
 
   render() {
     return <div ref={this.canvasRef} />;

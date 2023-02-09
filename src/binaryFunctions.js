@@ -1,10 +1,37 @@
-class Node {
-  constructor(value, index) {
-    this.value = value;
-    this.left = null;
-    this.right = null;
+export class Node {
+  constructor(value, index, ancestor) {
+    this.value = value
+    this.left = null
+    this.right = null
     this.index = index
+    this.target = false
+    this.ancestor = ancestor
   }
+}
+
+export const removeNodeProbability = {
+  5: [0.3, 0.5],
+  6: [0.2, 0.35, 0.55],
+  7: [0.15, 0.25, 0.3, 0.6],
+  8: [0.12, 0.2, 0.26, 0.3, 0.65]
+}
+
+export const initialZoom = {
+  5: 1, 
+  6: 0.6,
+  7: 0.31
+}
+
+export const translate = {
+  5: [-5, 60],
+  6: [-10, 70], 
+  7: [-55, 90]
+}
+
+export const delay = {
+  5: 200, 
+  6: 175, 
+  7: 175
 }
 
 function generateFullTree(layers) {
@@ -17,24 +44,19 @@ function generateFullTree(layers) {
   return root;
 }
 
-function bfs_search(root) {
-  const queue = [root];
-  let currentLayer = 1;
-  let nodesInCurrentLayer = 1;
+function bfs_search(root, target) {
+  const queue = [root]
   while (queue.length > 0) {
-    const node = queue.shift();
-    nodesInCurrentLayer--;
+    const node = queue.shift()
+    if(node.value === target) return node
     if (node.left !== null) {
-      queue.push(node.left);
+      queue.push(node.left)
     }
     if (node.right !== null) {
-      queue.push(node.right);
-    }
-    if (nodesInCurrentLayer === 0) {
-      currentLayer++;
-      nodesInCurrentLayer = queue.length;
+      queue.push(node.right)
     }
   }
+  return false
 }
 
 function depthFirstSearch(root) {
@@ -44,36 +66,22 @@ function depthFirstSearch(root) {
 }
 
 function dfs(root) {
-  if (!root) return;
-  const stack = [root];
+  if (!root) return
+  const stack = [root]
   while (stack.length > 0) {
-    const node = stack.pop();
-    if (node.right) stack.push(node.right);
-    if (node.left) stack.push(node.left);
+    const node = stack.pop()
+    if (node.right) stack.push(node.right)
+    if (node.left) stack.push(node.left)
   }
 }
 
-function randomTree(layers) {
-  if (layers === 0) {
-    return null;
+function reverseTree(root) {
+  if (!root) return;
+  let queue = [root];
+  while (queue.length > 0) {
+      let node = queue.shift();
+      [node.left, node.right] = [node.right, node.left];
+      if (node.left) queue.push(node.left);
+      if (node.right) queue.push(node.right);
   }
-  if (layers === 1) {
-    return new Node();
-  }
-  const root = new Node();
-  root.left = randomTree(layers - 1);
-  if (layers === 3) {
-    // Set probability for third layer
-    if (Math.random() < 0.5) {
-      root.right = randomTree(layers - 1);
-    }
-  } else if (layers === 4) {
-    // Set probability for fourth layer
-    if (Math.random() < 0.75) {
-      root.right = randomTree(layers - 1);
-    }
-  } else {
-    root.right = randomTree(layers - 1);
-  }
-  return root;
 }

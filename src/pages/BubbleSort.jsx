@@ -1,12 +1,16 @@
 import { Button } from 'flowbite-react'
 import React, {useState} from 'react'
-import { ListSnippets } from '../codeSnippets'
+import { codeSnippets } from '../codeSnippets'
 import CodeBlock from '../components/CodeBlock'
 import NodeChain from '../components/NodeChain'
 import { createLinkedList } from '../sexyFunctions'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
+import { Link } from 'react-router-dom'
 
 function BubbleSort() {
   const [isListCreated, setIsListCreated] = useState(false)
+  const [isStarted, setIsStarted] = useState(false)
   const [heads, setHeads] = useState({})
   const [bgColor, setBgcolor] = useState({})
   const [highlightedNodes1, setHighlightedNodes1] = useState({})
@@ -54,7 +58,12 @@ function BubbleSort() {
   }
 
   return (
-    <div>
+    <div className='relative'>
+      <div className='absolute left-20 my-3'>
+        <Link to={'/linked-lists'}>  
+                <FontAwesomeIcon icon={faArrowLeft}></FontAwesomeIcon>
+        </Link>
+      </div>
         {!isListCreated && 
         <div className='mx-auto flex justify-center'>
           <Button onClick={() => initiate()}>Generate Random Linked Lists</Button>
@@ -62,13 +71,16 @@ function BubbleSort() {
         {isListCreated && 
         <div className="flex items-center flex-col">
           <div className='justify-center'>
-            <Button color="success" onClick={() => startLooping(heads)}>Start the Algorithm</Button>
+            {!isStarted && <Button color="success" onClick={() => {
+              setIsStarted(true)
+              startLooping(heads)
+            }}>Start the Algorithm</Button>}
+            {isStarted && <CodeBlock code={codeSnippets['bubble']} title={'Bubble Sort'}/>}
           </div>
           <NodeChain head={heads[0]}  bgColor={bgColor[0]} highlightedNode={highlightedNodes1[0]} fastNode={highlightedNodes2[0]}/>
           <NodeChain head={heads[1]}  bgColor={bgColor[1]} highlightedNode={highlightedNodes1[1]} fastNode={highlightedNodes2[1]}/>
           <NodeChain head={heads[2]}  bgColor={bgColor[2]} highlightedNode={highlightedNodes1[2]} fastNode={highlightedNodes2[2]}/>
-          <br></br>
-          <CodeBlock code={ListSnippets['bubble']}/>
+          <br></br>         
         </div>}
     </div>
   )
