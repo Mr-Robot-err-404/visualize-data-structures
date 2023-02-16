@@ -83,7 +83,7 @@ function BinaryTrees({isTreeFull, layers, type}) {
         if (node.left) stack.push(node.left)
         if (node.right) stack.push(node.right)
       }
-      
+      node.isNodeVisited = true
       await new Promise((resolve) => setTimeout(resolve, delay[layers]))
     }
     setIsSearching(false)
@@ -108,7 +108,7 @@ function BinaryTrees({isTreeFull, layers, type}) {
           }
         }
       }
-      
+
       if(isTreeReversed){
         setHighlightedNode(reverseNodes[index].index)
         if(reverseNodes[index].target){
@@ -116,12 +116,14 @@ function BinaryTrees({isTreeFull, layers, type}) {
         } 
         if (node.right !== null) queue.push(node.right)
         if (node.left !== null) queue.push(node.left)
+        reverseNodes[index].isNodeVisited = true
       }
       else {
         setHighlightedNode(index)
         if(nodes[index].target) break
         if (node.left !== null) queue.push(node.left)
         if (node.right !== null) queue.push(node.right)
+        nodes[index].isNodeVisited = true
       } 
       index++
       await new Promise((resolve) => setTimeout(resolve, delay[layers]))
@@ -132,6 +134,7 @@ function BinaryTrees({isTreeFull, layers, type}) {
   async function searchBST(root, target) {
     while(root !== null){
       setHighlightedNode(root.index)
+      root.isNodeVisited = true
       if(root.target) break
       if(root.value < target) root = root.left
       else if(root.value > target) root = root.right
@@ -249,7 +252,7 @@ function BinaryTrees({isTreeFull, layers, type}) {
           <ToggleSwitch
           checked={isTreeReversed}
           disabled={isSearching}
-          label="Reverse Tree"
+          label="Invert Tree"
           onChange={() => {
             setIsTreeReversed(!isTreeReversed)
           }}/>
@@ -290,8 +293,8 @@ function BinaryTrees({isTreeFull, layers, type}) {
             }} className="my-1"/>
         </div>}
       </div>}
-      {!isTreeReversed && <Tree nodes={nodes} highlightedNode={highlightedNode} layers={layers} target={target} updateTarget={updateTarget} viewScale={viewScale}/>}
-      {isTreeReversed && <Tree nodes={reverseNodes} highlightedNode={highlightedNode} layers={layers} target={target} updateTarget={updateTarget} viewScale={viewScale}/>}
+      {!isTreeReversed && <Tree nodes={nodes} highlightedNode={highlightedNode} layers={layers} target={target} updateTarget={updateTarget} viewScale={viewScale} isTreeFinished={isTreeFinished} isSearchStarted={isSearchStarted}/>}
+      {isTreeReversed && <Tree nodes={reverseNodes} highlightedNode={highlightedNode} layers={layers} target={target} updateTarget={updateTarget} viewScale={viewScale} isTreeFinished={isTreeFinished} isSearchStarted={isSearchStarted}/>}
     </div>
   )
 }

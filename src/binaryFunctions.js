@@ -6,6 +6,7 @@ export class Node {
     this.index = index
     this.target = false
     this.ancestor = ancestor
+    this.isNodeVisited = false
   }
 }
 
@@ -29,9 +30,9 @@ export const translate = {
 }
 
 export const delay = {
-  5: 200, 
-  6: 175, 
-  7: 175
+  5: 225, 
+  6: 200, 
+  7: 200
 }
 
 function generateFullTree(layers) {

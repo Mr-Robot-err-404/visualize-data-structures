@@ -8,7 +8,7 @@ import ListProfile from '../linked-list-profile.png'
 function HomePage() {
   return (
     <div className='flex justify-center'>
-      <div className="max-w-sm mx-10">
+      <div className="max-w-sm mx-10 my-10">
       <Card imgSrc={ListProfile}>
         <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
           Linked Lists
@@ -35,7 +35,7 @@ function HomePage() {
         </Link>
       </Card>
       </div>
-      <div className="max-w-sm mx-10">
+      <div className="max-w-sm mx-10 my-10">
       <Card imgSrc={TreeProfile}>
         <h5 className="text-2xl font-bold tracking-tight text-gray-900 dark:text-white">
           Binary Trees
