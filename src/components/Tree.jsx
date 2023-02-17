@@ -14,8 +14,6 @@ class Tree extends React.Component {
     let { target } = this.props
     let { isTreeFinished } = this.props
     let { isSearchStarted } = this.props
-    let { isTreeReversed } = this.props
-    let currentTarget = null
     let highlightedNode = null
     let canvasSize = {}
     let distance = {}
@@ -63,9 +61,6 @@ class Tree extends React.Component {
     }
     p.updateIsSearchStarted = (newValue) => {
       isSearchStarted = newValue
-    }
-    p.updateIsTreeReversed = (newValue) => {
-      console.log("Function is called")
     }
     p.setup = () => { 
       p.createCanvas(canvasSize[layers][0],canvasSize[layers][1])
@@ -166,9 +161,6 @@ class Tree extends React.Component {
     }
     if(this.props.isSearchStarted !== prevProps.isSearchStarted){
       this.myP5.updateIsSearchStarted(this.props.isSearchStarted)
-    }
-    if(this.props.isTreeReversed !== prevProps.isTreeReversed){
-      this.myP5.updateIsTreeReversed(this.props.isTreeReversed)
     }
   }
 
