@@ -166,7 +166,7 @@ function BinaryTrees({isTreeFull, layers, type}) {
     return root
   }
 
-  async function bfs_render(root, render) {
+  async function bfs_render(root) {
     let index = 1
     const queue = [root]
     while (queue.length > 0) {
@@ -293,8 +293,8 @@ function BinaryTrees({isTreeFull, layers, type}) {
             }} className="my-1"/>
         </div>}
       </div>}
-      {!isTreeReversed && <Tree nodes={nodes} highlightedNode={highlightedNode} layers={layers} target={target} updateTarget={updateTarget} viewScale={viewScale} isTreeFinished={isTreeFinished} isSearchStarted={isSearchStarted}/>}
-      {isTreeReversed && <Tree nodes={reverseNodes} highlightedNode={highlightedNode} layers={layers} target={target} updateTarget={updateTarget} viewScale={viewScale} isTreeFinished={isTreeFinished} isSearchStarted={isSearchStarted}/>}
+      {!isTreeReversed && <Tree nodes={nodes} highlightedNode={highlightedNode} layers={layers} target={target} updateTarget={updateTarget} viewScale={viewScale} isTreeFinished={isTreeFinished} isSearchStarted={isSearchStarted} isTreeReversed={isTreeReversed}/>}
+      {isTreeReversed && <Tree nodes={reverseNodes} highlightedNode={highlightedNode} layers={layers} target={target} updateTarget={updateTarget} viewScale={viewScale} isTreeFinished={isTreeFinished} isSearchStarted={isSearchStarted} isTreeReversed={isTreeReversed}/>}
     </div>
   )
 }

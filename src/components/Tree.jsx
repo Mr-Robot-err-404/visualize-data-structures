@@ -14,6 +14,7 @@ class Tree extends React.Component {
     let { target } = this.props
     let { isTreeFinished } = this.props
     let { isSearchStarted } = this.props
+    let { isTreeReversed } = this.props
     let currentTarget = null
     let highlightedNode = null
     let canvasSize = {}
@@ -57,14 +58,14 @@ class Tree extends React.Component {
     p.updateViewscale = (newViewscale) => {
       viewScale = newViewscale
     }
-    p.updateIsTreeFinshed = (newValue) => {
+    p.updateIsTreeFinished = (newValue) => {
       isTreeFinished = newValue
     }
     p.updateIsSearchStarted = (newValue) => {
       isSearchStarted = newValue
     }
-    p.updateCurrentTarget = (newTarget) => {
-      currentTarget = newTarget
+    p.updateIsTreeReversed = (newValue) => {
+      console.log("Function is called")
     }
     p.setup = () => { 
       p.createCanvas(canvasSize[layers][0],canvasSize[layers][1])
@@ -123,23 +124,23 @@ class Tree extends React.Component {
         let yPos = (p.mouseY - translate[layers][1]) / viewScale
         let distance = p.dist( coords[`x${1}`],  coords[`y${1}`], xPos, yPos)
         if (distance < 35 / 2) {
-          if(currentTarget) nodes[currentTarget].target = false
+          if(target) Object.keys(nodes).forEach((key) => nodes[key].target = false)
           nodes[1].target = true
           updateTarget(nodes[1].value)
-          currentTarget = 1
         }
         let currLayer = 2
-        for(let i = 2; i < Object.keys(nodes).length; i++){
+        for(let i = 2; i <= Object.keys(nodes).length; i++){
           if(Math.pow(2, currLayer) === i){
             currLayer++
           }
-          let d = p.dist( coords[`x${i}`],  coords[`y${currLayer}`], xPos, yPos)
+          let d = p.dist(coords[`x${i}`], coords[`y${currLayer}`], xPos, yPos)
           if (d < 35 / 2) {
             if(nodes[i].value !== 'A' && nodes[i].ancestor.value !== 'A'){
-              if(currentTarget) nodes[currentTarget].target = false
+              if(target) {
+                Object.keys(nodes).forEach((key) => nodes[key].target = false)
+              } 
               nodes[i].target = true
               updateTarget(nodes[i].value)
-              currentTarget = i
             }
           }
         }
@@ -161,13 +162,13 @@ class Tree extends React.Component {
       this.myP5.updateViewscale(this.props.viewScale)
     }
     if(this.props.isTreeFinished !== prevProps.isTreeFinished){
-      this.myP5.updateIsTreeFinshed(this.props.isTreeFinished)
+      this.myP5.updateIsTreeFinished(this.props.isTreeFinished)
     }
     if(this.props.isSearchStarted !== prevProps.isSearchStarted){
       this.myP5.updateIsSearchStarted(this.props.isSearchStarted)
     }
-    if(this.props.currentTarget !== prevProps.currentTarget){
-      this.myP5.updateCurrentTarget(this.props.currentTarget)
+    if(this.props.isTreeReversed !== prevProps.isTreeReversed){
+      this.myP5.updateIsTreeReversed(this.props.isTreeReversed)
     }
   }
 
